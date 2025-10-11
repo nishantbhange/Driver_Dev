@@ -1,0 +1,70 @@
+/*
+ * stm32f40xx_spi_driver.h
+ *
+ *  Created on: Oct 4, 2025
+ *      Author: nisha
+ */
+
+#ifndef DRIVER_INC_STM32F40XX_SPI_DRIVER_H_
+#define DRIVER_INC_STM32F40XX_SPI_DRIVER_H_
+
+#define SPI_MASTER_MODE 1
+#define SPI_SLAVE_MODE  0
+
+#define SPI_FULL_DUPLEX  0
+#define SPI_HALF_DUPLEX
+#define SPI_SIMPLEX
+
+#define SPI_8_BIT_DFF 0
+#define SPI_16_BIT_DFF 1
+
+#define SPI_SSM_EN  1
+#define SPI_SSM_DI  0
+
+
+
+typedef struct{
+	uint8_t Spi_Device_Mode;
+	uint8_t Spi_Bus_Config;
+	uint8_t Spi_Sclk_Speed;
+	uint8_t Spi_Dff;
+	uint8_t Spi_Cpol;
+	uint8_t Spi_Cpha;
+	uint8_t Spi_Ssm;
+
+}Spi_Config_Def;
+
+typedef struct{
+	uint32_t SPI_CR1;
+	uint32_t SPI_CR2;
+	uint32_t SPI_SR;
+	uint32_t SPI_DR;
+	uint32_t SPI_CRCPR;
+	uint32_t SPI_RXCRCR;
+	uint32_t SPI_TXCRCR;
+	uint32_t SPI_I2SCFGR;
+	uint32_t SPI_I2SPR;
+
+}Spi_Reg_Def;
+
+typedef struct{
+
+	Spi_Reg_Def *Pspix ;
+	Spi_Config_Def Spi_Config;
+
+}Spi_Handle_t;
+
+
+
+void Spi_Periph_Clk_Control(Spi_Reg_Def *Pspix,uint8_t EnorDI);
+void Spi_Init(Spi_Handle_t *Pspix_Handle);
+void Spi_Dinit(Spi_Reg_Def *Pspix,Rcc_Reg_Def*);
+void Spi_Send_Data(Spi_Reg_Def *Pspix,uint8_t *pTXbuffer,uint32_t length);
+void Spi_Recieve_Data(Spi_Reg_Def *Pspix,uint8_t *pRXbuffer,uint32_t length);
+
+
+
+
+
+
+#endif /* DRIVER_INC_STM32F40XX_SPI_DRIVER_H_ */

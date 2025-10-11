@@ -1,0 +1,14 @@
+#include<stdio.h>
+#include<stdint.h>
+#include<stm32f407xx.h>
+#include<stm32f40xx_spi_driver.h>
+#include<stm32f4xx_gpio_driver.h>
+
+int main(){
+
+
+
+
+	return 0;
+}
+

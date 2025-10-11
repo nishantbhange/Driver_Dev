@@ -1,0 +1,63 @@
+/*
+ * stm32f4xx_spi_driver.c
+ *
+ *  Created on: Oct 4, 2025
+ *      Author: nisha
+ */
+
+
+#include"stm32f40xx_spi_driver.h"
+
+
+void Spi_Periph_Clk_Control(Spi_Reg_Def *Pspix,uint8_t EnorDI){
+	if (EnorDI==Enable){
+
+			if (Pspix==SPI1){
+				SPI1_PCLK_EN();
+			    }
+			else if(Pspix==SPI2){
+				SPI2_PCLK_EN();
+				}
+			else if(Pspix==SPI3){
+				SPI3_PCLK_EN();
+				}
+		}
+
+		else{
+
+			if (Pspix==SPI1){
+				SPI1_PCLK_DI();
+				}
+			else if(Pspix==SPI2){
+				SPI2_PCLK_DI();
+				}
+			else if(Pspix==SPI3){
+				SPI3_PCLK_DI();
+				}
+
+
+		}
+
+
+}
+void Spi_Init(Spi_Handle_t *Pspix_Handle){
+
+
+}
+void Spi_Dinit(Spi_Reg_Def *Pspix,Rcc_Reg_Def*){
+
+
+}
+void Spi_Send_Data(Spi_Reg_Def *Pspix,uint8_t *pTXbuffer,uint32_t length){
+
+}
+void Spi_Recieve_Data(Spi_Reg_Def *Pspix,uint8_t *pRXbuffer,uint32_t length){
+
+}
+
+void Spi_Irq_Config(uint8_t Irq_No,uint8_t Priority,uint8_t EnorDi){
+
+}
+void Spi_Irq_Handling(Spi_Handle_t *Pspix_Handle){
+
+}

@@ -1,0 +1,67 @@
+/*
+ ============================================================================
+ Name        : Queue_LL.c
+ Author      : 
+ Version     :
+ Copyright   : Your copyright notice
+ Description : Hello World in C, Ansi-style
+ ============================================================================
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include<stdint.h>
+
+struct node{
+	int data ;
+	struct node * nextnode;
+
+};
+
+struct node *newnode,*head=NULL,*tail=NULL;
+
+void enqueue(void ){
+
+	newnode=(struct node *)malloc(sizeof(struct node));
+	newnode->nextnode=NULL;
+	if(head==NULL&&tail==NULL){
+		head=newnode;
+		tail=newnode;
+		printf("enter the data you want to enqueue\n");
+		scanf("%d",&tail->data);
+		}
+		else{
+		printf("enter the data you want to enqueue\n");
+		scanf("%d",&tail->data);
+		tail->nextnode=newnode;
+		tail=newnode;
+
+		}
+}
+
+void dequeue(void){
+	if(head==tail){
+		printf("nothing in a queue\n");
+	}
+	else{
+		temp=head;
+		printf("%d\n",head->data);
+		head=head->nextnode;
+		free(temp);
+	}
+}
+int main(void) {
+
+	dequeue();
+	enqueue();
+	enqueue();
+	enqueue();
+
+	dequeue();
+	dequeue();
+	dequeue();
+	dequeue();
+
+
+	return 0;
+}

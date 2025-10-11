@@ -1,0 +1,306 @@
+/*
+ * stm32f4xx_spi_driver.c
+ *
+ *  Created on: Oct 4, 2025
+ *      Author: nisha
+ */
+
+
+#include"stm32f40xx_spi_driver.h"
+#include"stm32f4xx_gpio_driver.h"
+//sir has written ssi and ssm config differnetly but i add them into spi config only !!
+ uint8_t* TX_Buffer_Addr;
+ uint8_t len;
+static void Spi_TX_IT_Helper();
+static void Spi_RX_IT_Helper();
+static void Spi_OVR_IT_Handler();
+void Spi_Periph_Clk_Control(Spi_Reg_Def *Pspix,uint8_t EnorDI){
+	if (EnorDI==Enable){
+
+			if (Pspix==SPI1){
+				SPI1_PCLK_EN();
+			    }
+			else if(Pspix==SPI2){
+				SPI2_PCLK_EN();
+				}
+			else if(Pspix==SPI3){
+				SPI3_PCLK_EN();
+				}
+		}
+
+		else{
+
+			if (Pspix==SPI1){
+				SPI1_PCLK_DI();
+				}
+			else if(Pspix==SPI2){
+				SPI2_PCLK_DI();
+				}
+			else if(Pspix==SPI3){
+				SPI3_PCLK_DI();
+				}
+
+
+		}
+
+
+}
+void Spi_Init(Spi_Handle_t *Pspix_Handle){
+	Spi_Periph_Clk_Control(Pspix_Handle->Pspix, Enable);
+	uint32_t tempreg=0;
+	tempreg |=Pspix_Handle->Spi_Config.Spi_Device_Mode<<2;
+	tempreg |=Pspix_Handle->Spi_Config.Spi_Cpol<<1;
+	tempreg |=Pspix_Handle->Spi_Config.Spi_Cpha<<0;
+	tempreg |=Pspix_Handle->Spi_Config.Spi_Ssm<<9;
+	tempreg |=Pspix_Handle->Spi_Config.Spi_Dff<<11;
+	tempreg |=Pspix_Handle->Spi_Config.Spi_Sclk_Speed<<3;
+	tempreg |=Pspix_Handle->Spi_Config.Spi_Ssi<<8;
+	if(Pspix_Handle->Spi_Config.Spi_Bus_Config==SPI_FULL_DUPLEX){
+
+		tempreg&=~(1<<15);
+	}
+	else if(Pspix_Handle->Spi_Config.Spi_Device_Mode==SPI_HALF_DUPLEX){
+		tempreg |= (1<<15);
+	}
+
+	else if(Pspix_Handle->Spi_Config.Spi_Device_Mode==SPI_SIMPLEX_RX){
+			tempreg &=~(1<<14);
+			tempreg&=~(1<<15);
+			tempreg |=(1<<10);
+		}
+tempreg &=(0x0000ffff);
+Pspix_Handle->Pspix->SPI_CR1|=tempreg;
+
+}
+void Spi_Ssoe_cntrl(Spi_Reg_Def *SPI,uint8_t ENorDI ){
+	if(ENorDI){
+		SPI->SPI_CR2|=(2<<6);
+	}
+	else{
+		SPI->SPI_CR2&=~(2<<6);
+
+	}
+
+}
+
+void Spi_Periph_Cntrl(Spi_Reg_Def * Pspix,uint8_t En_Di){
+	if(En_Di==Enable){
+	Pspix->SPI_CR1|=(1<<6);
+	}
+	else{
+		Pspix->SPI_CR1&=~(1<<6);
+	}
+}
+
+void Spi_Dinit(Spi_Reg_Def *Pspix,Rcc_Reg_Def*){
+
+
+}
+void Spi_Send_Data(Spi_Reg_Def *Pspix,uint8_t *pTXbuffer,uint32_t length){
+
+	while(length>0){
+
+		while(!((Pspix->SPI_SR>>1)&0x01)){}
+		if(!((Pspix->SPI_CR1>>11)&0x01)){
+			Pspix->SPI_DR=*pTXbuffer;
+			length--;
+			pTXbuffer++;
+			}
+		else{
+			Pspix->SPI_DR=*((uint16_t*)pTXbuffer);
+			length--;
+			length--;
+			pTXbuffer++;
+			pTXbuffer++;
+		}
+
+		}
+
+}
+void Spi_Recieve_Data(Spi_Reg_Def *Pspix,uint8_t *pRXbuffer,uint32_t length){
+	while(length>0){
+
+			while(((Pspix->SPI_SR)&0x01));
+			if(!((Pspix->SPI_CR1>>11)&0x01)){
+				*pRXbuffer=Pspix->SPI_DR;
+				length--;
+				pRXbuffer++;
+				}
+			else{
+				*((uint16_t*)pRXbuffer)=Pspix->SPI_DR;
+				length--;
+				length--;
+				pRXbuffer++;
+				pRXbuffer++;
+			}
+
+			}
+
+}
+
+void Spi_Irq_Config(uint8_t Irq_No,uint8_t Priority,uint8_t EnorDi){
+	if(EnorDi==Enable){
+			if(Irq_No<31){
+				*NVIC_ISER0 |=(1<<Irq_No);
+			}
+			else if (31<Irq_No&&Irq_No<63){
+				*NVIC_ISER1 |=(1<<Irq_No%32);
+			}
+			else if (63<Irq_No&&Irq_No<95){
+						*NVIC_ISER2 |=(1<<Irq_No%32);
+					}
+
+		}
+
+		else{
+			if(Irq_No<31){
+						*NVIC_ICER0 |=(1<<Irq_No);
+					}
+					else if (31<Irq_No&&Irq_No<63){
+						*NVIC_ICER1 |=(1<<Irq_No%32);
+					}
+					else if (63<Irq_No&&Irq_No<95){
+						*NVIC_ICER2 |=(1<<Irq_No%32);
+							}
+		}
+
+
+		uint8_t temp1=Irq_No/4;
+		uint8_t temp2=Irq_No%4+(8-BITS_ENABLE_FOR_PRIORITY);
+		*(NVIC_IPR_BASE+temp1) &=~(0xff<<8*temp2);
+		*(NVIC_IPR_BASE+temp1) |=(Priority<<8*temp2);
+
+
+
+}
+
+
+uint8_t Spi_Send_Data_IT(Spi_Handle_t *SPI,uint8_t *pTXbuffer,uint32_t length){
+uint8_t state=SPI->TX_State;
+if(!(state==SPI_BSY_TX_STATE)){
+SPI->TX_Len=length;
+SPI->PTx_Buffer=pTXbuffer;
+SPI->TX_State=SPI_BSY_TX_STATE;
+SPI->Pspix->SPI_CR2|=(1<<7);
+}
+return state;
+
+
+}
+uint8_t Spi_Recieve_Data_IT(Spi_Handle_t *SPI,uint8_t *pRXbuffer,uint32_t length){
+	uint8_t state=SPI->RX_State;
+	if(!(state==SPI_BSY_RX_STATE)){
+	SPI->RX_Len=length;
+	SPI->PRx_Buffer=pRXbuffer;
+	SPI->RX_State=SPI_BSY_RX_STATE;
+	SPI->Pspix->SPI_CR2|=(1<<6);
+	}
+	return state;
+
+
+}
+void Spi_Irq_Handling(Spi_Handle_t *Pspix_Handle){
+
+	uint8_t temp1, temp2;
+	temp1=(Pspix_Handle->Pspix->SPI_SR>>1)&(0x1);
+	temp2=(Pspix_Handle->Pspix->SPI_CR2>>7)&(0x1);
+	if(temp1&&temp2){
+		Spi_TX_IT_Helper(Pspix_Handle);
+
+	}
+
+	temp1=(Pspix_Handle->Pspix->SPI_SR)&(0x1);
+	temp2=(Pspix_Handle->Pspix->SPI_CR2>>6)&(0x1);
+
+	if(temp1&&temp2){
+			Spi_RX_IT_Helper(Pspix_Handle);
+
+		}
+	temp1=(Pspix_Handle->Pspix->SPI_SR>>6)&(0x1);
+	temp2=(Pspix_Handle->Pspix->SPI_CR2>>5)&(0x1);
+
+		if(temp1&&temp2){
+				Spi_OVR_IT_Handler(Pspix_Handle);
+
+			}
+
+}
+void Spi_TX_IT_Helper(Spi_Handle_t *Pspix_Handle){
+	while(Pspix_Handle->TX_Len>0 ){
+		if(Pspix_Handle->Pspix->SPI_CR1>>11 & 1){
+		Pspix_Handle->Pspix->SPI_DR=*((uint16_t*)Pspix_Handle->PTx_Buffer);
+		Pspix_Handle->PTx_Buffer--;
+		Pspix_Handle->PTx_Buffer--;
+		Pspix_Handle->TX_Len-=2;
+		}
+		else{
+			Pspix_Handle->Pspix->SPI_DR=*(Pspix_Handle->PTx_Buffer);
+				Pspix_Handle->PTx_Buffer--;
+
+				Pspix_Handle->TX_Len--;
+
+		}
+
+	}
+if(!Pspix_Handle->TX_Len){
+
+	SPI_Close_TX(Pspix_Handle);
+	SPI_ApplicationEventCallback(Pspix_Handle,SPI_EVENT_TX_CMPLT);
+
+}
+}
+void Spi_RX_IT_Helper(Spi_Handle_t *Pspix_Handle){
+	while(Pspix_Handle->RX_Len>0 ){
+		if(Pspix_Handle->Pspix->SPI_CR1>>11 & 1){
+		*((uint16_t*)Pspix_Handle->PRx_Buffer)=(uint16_t)Pspix_Handle->Pspix->SPI_DR;
+		Pspix_Handle->PRx_Buffer++;
+		Pspix_Handle->PRx_Buffer++;
+		Pspix_Handle->RX_Len-=2;
+		}
+		else{
+			*(Pspix_Handle->PRx_Buffer)=(uint8_t)Pspix_Handle->Pspix->SPI_DR;
+				Pspix_Handle->PRx_Buffer++;
+
+				Pspix_Handle->RX_Len--;
+
+		}
+
+	}
+if(!Pspix_Handle->RX_Len){
+
+	SPI_Close_RX(Pspix_Handle);
+	SPI_ApplicationEventCallback(Pspix_Handle,SPI_EVENT_RX_CMPLT);
+
+}
+}
+void Spi_OVR_IT_Handler(Spi_Handle_t *Pspix_Handle){
+
+	if(Pspix_Handle->RX_State!=SPI_BSY_TX_STATE){
+		SPI_Clear_OVR_Flag(Pspix_Handle);
+	}
+
+	SPI_ApplicationEventCallback(Pspix_Handle,SPI_EVENT_RX_CMPLT);
+
+}
+void SPI_Clear_OVR_Flag(Spi_Handle_t *Pspix_Handle){
+	uint8_t temp;
+	temp=Pspix_Handle->Pspix->SPI_DR;
+			temp=Pspix_Handle->Pspix->SPI_SR;
+			(void)temp;
+
+}
+
+void SPI_Close_TX(Spi_Handle_t *Pspix_Handle){
+	Pspix_Handle->TX_State=SPI_READY_STATE;
+Pspix_Handle->Pspix->SPI_CR2 &=~(0x01<<7);
+Pspix_Handle->TX_Len=0;
+Pspix_Handle->PTx_Buffer=NULL;
+}
+
+void SPI_Close_RX(Spi_Handle_t *Pspix_Handle){
+
+	Pspix_Handle->RX_State=SPI_READY_STATE;
+		Pspix_Handle->Pspix->SPI_CR2 &=~(0x01<<6);
+		Pspix_Handle->RX_Len=0;
+		Pspix_Handle->PRx_Buffer=NULL;
+}

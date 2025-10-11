@@ -1,0 +1,40 @@
+#include<stdio.h>
+#include<stdint.h>
+#include"stm32f407xx.h"
+//pb12 nss
+//pb13 sck
+//pb14 miso
+//pb15 mosi
+void Gpio_Pin_Config(Gpio_Handle_t GPIOX){
+
+	GPIOX.Gpio_Pin_Config.Gpio_Pin_Mode=GPIO_MODE_ATFN;
+	GPIOX.Gpio_Pin_Config.Gpio_Pin_AltfnMode=5;
+	GPIOX.Gpio_Pin_Config.Gpio_Pin_Optype=OTYPER_PUPL;
+	GPIOX.Gpio_Pin_Config.Gpio_Pin_PUPDcontrl=NO_PUPDR;
+	GPIOX.Gpio_Pin_Config.Gpio_Pin_Speed=HIGH_SPEED;
+
+	GPIOX.Gpio_Pin_Config.Gpio_Pin_Number=GPIO_PIN_12;
+	Gpio_Init(&GPIOX);
+
+	GPIOX.Gpio_Pin_Config.Gpio_Pin_Number=GPIO_PIN_13;
+	Gpio_Init(&GPIOX);
+
+	GPIOX.Gpio_Pin_Config.Gpio_Pin_Number=GPIO_PIN_14;
+	Gpio_Init(&GPIOX);
+
+	GPIOX.Gpio_Pin_Config.Gpio_Pin_Number=GPIO_PIN_15;
+	Gpio_Init(&GPIOX);
+
+
+}
+
+int main(){
+	Gpio_Handle_t GPIOX;
+	GPIOX.pGPIOX=GPIOB;
+Gpio_Pin_Config(GPIOX);
+
+
+
+}
+
+

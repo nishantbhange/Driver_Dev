@@ -1,0 +1,34 @@
+
+/*
+ * Toggle_Led.c
+ *
+ *  Created on: Sep 18, 2025
+ *      Author: nisha
+ */
+#include<stdio.h>
+#include<stdint.h>
+#include<stm32f407xx.h>
+
+void delay(void ){
+	for(int i=0;i<100000;i++);
+}
+int main (void ){
+	Gpio_Handle_t gpio;
+	gpio.pGPIOX=GPIOD;
+	gpio.Gpio_Pin_Config.Gpio_Pin_Mode=GPIO_MODE_OP;
+	gpio.Gpio_Pin_Config.Gpio_Pin_Number=GPIO_PIN_12;
+	gpio.Gpio_Pin_Config.Gpio_Pin_PUPDcontrl=NO_PUPDR;
+	gpio.Gpio_Pin_Config.Gpio_Pin_Optype=OTYPER_PUPL;
+	gpio.Gpio_Pin_Config.Gpio_Pin_Speed=LOW_SPEED;
+	Periph_Clk_Control(gpio.pGPIOX, Enable);
+	Gpio_Init(&gpio);
+
+
+	while(1){
+
+	Gpio_Toggle_Pin(gpio.pGPIOX, gpio.Gpio_Pin_Config.Gpio_Pin_Number);
+	delay();
+	//Gpio_Write_Pin(gpio.pGPIOX, gpio.Gpio_Pin_Config.Gpio_Pin_Number, Enable);
+	}
+	return 0;
+}

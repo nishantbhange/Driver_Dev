@@ -1,0 +1,22 @@
+15:59:13 **** Incremental Build of configuration Debug for project Create_LinkedList ****
+make all 
+'Building file: ../LinkedList.c'
+'Invoking: Cross GCC Compiler'
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"LinkedList.d" -MT"LinkedList.o" -o "LinkedList.o" "../LinkedList.c"
+'Finished building: ../LinkedList.c'
+' '
+'Building file: ../main.c'
+'Invoking: Cross GCC Compiler'
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"main.d" -MT"main.o" -o "main.o" "../main.c"
+'Finished building: ../main.c'
+' '
+'Building target: Create_LinkedList'
+'Invoking: Cross GCC Linker'
+gcc  -o "Create_LinkedList"  ./LinkedList.o ./main.o   
+c:/mingw/bin/../lib/gcc/mingw32/6.3.0/../../../libmingw32.a(main.o):(.text.startup+0xa0): undefined reference to `WinMain@16'
+collect2.exe: error: ld returned 1 exit status
+make: *** [Create_LinkedList] Error 1
+"make all" terminated with exit code 2. Build might be incomplete.
+
+15:59:15 Build Failed. 2 errors, 0 warnings. (took 1s.850ms)
+

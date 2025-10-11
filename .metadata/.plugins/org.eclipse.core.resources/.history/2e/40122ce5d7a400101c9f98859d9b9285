@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<stm32f407xx.h>
+#include<stm32f4xx_gpio_driver.h>
+#include<stdint.h>
+void delay(void ){
+	for(int i=0;i<100000;i++);
+}
+int main()
+{
+	Gpio_Handle_t GPIO;
+	GPIO.pGPIOX=GPIOA;
+	GPIO.Gpio_Pin_Config.Gpio_Pin_Mode=GPIO_MODE_IP;
+	GPIO.Gpio_Pin_Config.Gpio_Pin_Number=GPIO_PIN_0;
+	GPIO.Gpio_Pin_Config.Gpio_Pin_Optype=GPIO_OTYPER_PUPL;
+	GPIO.Gpio_Pin_Config.Gpio_Pin_Speed=GPIO_HIGH_SPEED;
+	GPIO.Gpio_Pin_Config.Gpio_Pin_PUPDcontrl=GPIO_NO_PUPDR;
+	Gpio_Init(&GPIO);
+	GPIO.pGPIOX=GPIOD;
+	GPIO.Gpio_Pin_Config.Gpio_Pin_Mode=GPIO_MODE_OP;
+	GPIO.Gpio_Pin_Config.Gpio_Pin_Number=GPIO_PIN_12;
+	Gpio_Init(&GPIO);
+	while(1){
+		static uint8_t prev_state=0;
+		uint8_t curr_state=Gpio_Read_Pin(GPIOA,GPIO_PIN_0 );
+
+		if(prev_state==0&&curr_state==1){
+
+			Gpio_Toggle_Pin(GPIOD, GPIO_PIN_12);
+			delay();
+
+
+		}
+		prev_state=curr_state;
+
+	}
+
+
+}

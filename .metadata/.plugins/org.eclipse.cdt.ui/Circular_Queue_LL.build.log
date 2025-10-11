@@ -1,0 +1,7 @@
+21:48:39 **** Incremental Build of configuration Debug for project Circular_Queue_LL ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Circular_Queue_LL.o" "..\\src\\Circular_Queue_LL.c" 
+gcc -o Circular_Queue_LL.exe "src\\Circular_Queue_LL.o" 
+
+21:48:40 Build Finished. 0 errors, 0 warnings. (took 662ms)
+

@@ -1,0 +1,19 @@
+12:29:17 **** Incremental Build of configuration Debug for project Driver_stm32f404xx ****
+make -j8 all 
+arm-none-eabi-gcc "../Src/Button_Interrupt.c" -mcpu=cortex-m4 -std=gnu11 -g3 -c -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_stm32f404xx/Driver/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/Button_Interrupt.d" -MT"Src/Button_Interrupt.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Src/Button_Interrupt.o"
+arm-none-eabi-gcc "../Driver/src/stm32f4xx_gpio_driver.c" -mcpu=cortex-m4 -std=gnu11 -g3 -c -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_stm32f404xx/Driver/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Driver/src/stm32f4xx_gpio_driver.d" -MT"Driver/src/stm32f4xx_gpio_driver.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Driver/src/stm32f4xx_gpio_driver.o"
+arm-none-eabi-gcc "../Driver/src/stm32f4xx_spi_driver.c" -mcpu=cortex-m4 -std=gnu11 -g3 -c -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_stm32f404xx/Driver/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Driver/src/stm32f4xx_spi_driver.d" -MT"Driver/src/stm32f4xx_spi_driver.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Driver/src/stm32f4xx_spi_driver.o"
+arm-none-eabi-gcc -o "Driver_stm32f404xx.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\nisha\OneDrive\Desktop\stm32f407\Driver_Dev\Driver_stm32f404xx\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Driver_stm32f404xx.map" -Wl,--gc-sections -static -L"C:\Users\nisha\OneDrive\Desktop\stm32f407\Driver_Dev\Driver_stm32f404xx\Driver\src" -L"C:\Users\nisha\OneDrive\Desktop\stm32f407\Driver_Dev\Driver_stm32f404xx\Driver\inc" --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Driver_stm32f404xx.elf
+ 
+arm-none-eabi-size  Driver_stm32f404xx.elf 
+arm-none-eabi-objdump -h -S Driver_stm32f404xx.elf  > "Driver_stm32f404xx.list"
+   text	   data	    bss	    dec	    hex	filename
+   2960	      0	   1568	   4528	   11b0	Driver_stm32f404xx.elf
+Finished building: default.size.stdout
+ 
+Finished building: Driver_stm32f404xx.list
+ 
+
+12:29:19 Build Finished. 0 errors, 0 warnings. (took 1s.954ms)
+

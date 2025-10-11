@@ -1,0 +1,35 @@
+14:08:32 **** Incremental Build of configuration Debug for project Gpio_testing ****
+make -j16 all 
+arm-none-eabi-gcc -mcpu=cortex-m4 -g3 -DDEBUG -c -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_stm32f404xx/Driver" -x assembler-with-cpp -MMD -MP -MF"Startup/startup_stm32f407vgtx.d" -MT"Startup/startup_stm32f407vgtx.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Startup/startup_stm32f407vgtx.o" "../Startup/startup_stm32f407vgtx.s"
+arm-none-eabi-gcc "../Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I../Inc -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src" -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_stm32f404xx/Driver/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/main.d" -MT"Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Src/main.o"
+arm-none-eabi-gcc "../Src/syscalls.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I../Inc -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src" -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_stm32f404xx/Driver/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/syscalls.d" -MT"Src/syscalls.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Src/syscalls.o"
+arm-none-eabi-gcc "../Src/sysmem.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I../Inc -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src" -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_stm32f404xx/Driver/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Src/sysmem.d" -MT"Src/sysmem.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Src/sysmem.o"
+arm-none-eabi-gcc "C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src/stm32f4xx_gpio_driver.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DSTM32 -DSTM32F407G_DISC1 -DSTM32F4 -DSTM32F407VGTx -c -I../Inc -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src" -I"C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_stm32f404xx/Driver/inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Driver_COMMAN/src/stm32f4xx_gpio_driver.d" -MT"Driver_COMMAN/src/stm32f4xx_gpio_driver.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Driver_COMMAN/src/stm32f4xx_gpio_driver.o"
+C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src/stm32f4xx_gpio_driver.c: In function 'Gpio_Init':
+C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src/stm32f4xx_gpio_driver.c:146:36: warning: '<<' in boolean context, did you mean '<'? [-Wint-in-bool-context]
+  146 | Gpiox_Handle->pGPIOX->Moder &=!(0x3<<2*(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number));
+      |                                ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src/stm32f4xx_gpio_driver.c:150:36: warning: '<<' in boolean context, did you mean '<'? [-Wint-in-bool-context]
+  150 | Gpiox_Handle->pGPIOX->Otyper&=!(0x1<<Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+      |                                ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src/stm32f4xx_gpio_driver.c:154:37: warning: '<<' in boolean context, did you mean '<'? [-Wint-in-bool-context]
+  154 | Gpiox_Handle->pGPIOX->Ospeedr&=!(0x3<<2*Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+      |                                 ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src/stm32f4xx_gpio_driver.c:157:37: warning: '<<' in boolean context, did you mean '<'? [-Wint-in-bool-context]
+  157 | Gpiox_Handle->pGPIOX->Pupdr &=!(0x3 << (2*Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number));
+      |                                ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src/stm32f4xx_gpio_driver.c: In function 'Gpio_Write_Pin':
+C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Driver_COMMAN/src/stm32f4xx_gpio_driver.c:239:35: warning: '<<' in boolean context, did you mean '<'? [-Wint-in-bool-context]
+  239 |                 Gpiox->Odr &=!(0x1<<pin_number);
+      |                               ~~~~^~~~~~~~~~~~~
+arm-none-eabi-gcc -o "Gpio_testing.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\nisha\OneDrive\Desktop\stm32f407\Driver_Dev\Gpio_testing\STM32F407VGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Gpio_testing.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+C:/ST/STM32CubeIDE_1.16.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld.exe: ./Src/main.o: in function `main':
+C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Gpio_testing/Debug/../Src/main.c:22:(.text.main+0x24): undefined reference to `Periph_Clk_Control'
+C:/ST/STM32CubeIDE_1.16.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld.exe: C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Gpio_testing/Debug/../Src/main.c:23:(.text.main+0x2c): undefined reference to `Gpio_Init'
+C:/ST/STM32CubeIDE_1.16.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/../lib/gcc/arm-none-eabi/13.3.1/../../../../arm-none-eabi/bin/ld.exe: C:/Users/nisha/OneDrive/Desktop/stm32f407/Driver_Dev/Gpio_testing/Debug/../Src/main.c:27:(.text.main+0x38): undefined reference to `Gpio_Toggle_Pin'
+collect2.exe: error: ld returned 1 exit status
+make: *** [makefile:64: Gpio_testing.elf] Error 1
+"make -j16 all" terminated with exit code 2. Build might be incomplete.
+
+14:08:36 Build Failed. 4 errors, 5 warnings. (took 3s.275ms)
+

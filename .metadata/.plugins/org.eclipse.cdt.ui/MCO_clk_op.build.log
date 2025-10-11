@@ -1,0 +1,10 @@
+17:49:09 **** Incremental Build of configuration Debug for project MCO_clk_op ****
+make -j16 all 
+arm-none-eabi-size  MCO_clk_op.elf 
+   text	   data	    bss	    dec	    hex	filename
+    744	      0	   1568	   2312	    908	MCO_clk_op.elf
+Finished building: default.size.stdout
+ 
+
+17:49:09 Build Finished. 0 errors, 0 warnings. (took 216ms)
+

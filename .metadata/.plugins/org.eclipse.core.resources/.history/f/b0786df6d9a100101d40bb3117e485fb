@@ -1,0 +1,351 @@
+/*
+ * stm32f4xx_gpio_driver.c
+ *
+ *  Created on: Sep 12, 2025
+ *      Author: nisha
+ */
+
+#include"stm32f4xx_gpio_driver.h"
+#include"stm32f407xx.h"
+#include<stdio.h>
+#include<stdint.h>
+//#pragma GCC diagnostic ignored "-Wint-in-bool-context"
+#pragma GCC diagnostic ignored "-Wunused-function"
+
+		void GPIOA_CLK_INIT(void){
+				            RCC->RCC_AHBENR[1] |=(1<<0);
+			}
+			void GPIOB_CLK_INIT(void){
+							RCC->RCC_AHBENR[1] |=(1<<1);
+						}
+			void GPIOC_CLK_INIT(void){
+							RCC->RCC_AHBENR[1] |=(1<<2);
+						}
+			void GPIOD_CLK_INIT(void){
+							RCC->RCC_AHBENR[1] |=(1<<3);
+			}
+
+			void GPIOE_CLK_INIT(void){
+							RCC->RCC_AHBENR[1] |=(1<<4);
+						}
+			void GPIOF_CLK_INIT(void){
+							RCC->RCC_AHBENR[1] |=(1<<5);
+						}
+			void GPIOG_CLK_INIT(void){
+							RCC->RCC_AHBENR[1] |=(1<<6);
+						}
+			void GPIOH_CLK_INIT(void){
+							RCC->RCC_AHBENR[1] |=(1<<7);
+						}
+			void GPIOI_CLK_INIT(void){
+							RCC->RCC_AHBENR[1] |=(1<<8);
+						}
+
+
+
+			void GPIOA_CLK_DINIT(void){
+							            RCC->RCC_AHBENR[1] &=!(1<<0);
+						}
+						void GPIOB_CLK_DINIT(void){
+										RCC->RCC_AHBENR[1] &=!(1<<1);
+									}
+						void GPIOC_CLK_DINIT(void){
+										RCC->RCC_AHBENR[1] &=!(1<<2);
+									}
+						void GPIOD_CLK_DINIT(void){
+										RCC->RCC_AHBENR[1] &=!(1<<3);}
+
+						void GPIOE_CLK_DINIT(void){
+										RCC->RCC_AHBENR[1] &=!(1<<4);
+									}
+						void GPIOF_CLK_DINIT(void){
+										RCC->RCC_AHBENR[1] &=!(1<<5);
+									}
+						void GPIOG_CLK_DINIT(void){
+										RCC->RCC_AHBENR[1] &=!(1<<6);
+									}
+						void GPIOH_CLK_DINIT(void){
+										RCC->RCC_AHBENR[1] &=!(1<<7);
+									}
+						void GPIOI_CLK_DINIT(void){
+										RCC->RCC_AHBENR[1] &=!(1<<8);
+									}
+
+
+
+void GPIO_Periph_Clk_Control(Gpio_Reg_Def *Gpiox,uint8_t EnorDI){
+	if (EnorDI==Enable){
+
+		if (Gpiox==GPIOA){
+			GPIOA_CLK_INIT();
+		}
+		else if(Gpiox==GPIOB){
+			GPIOB_CLK_INIT();
+			}
+		else if(Gpiox==GPIOC){
+					GPIOC_CLK_INIT();
+					}
+		else if(Gpiox==GPIOD){
+					GPIOD_CLK_INIT();
+					}
+		else if(Gpiox==GPIOE){
+					GPIOE_CLK_INIT();
+					}
+		else if(Gpiox==GPIOF){
+					GPIOF_CLK_INIT();
+					}
+		else if(Gpiox==GPIOG){
+					GPIOG_CLK_INIT();
+					}
+		else if(Gpiox==GPIOH){
+					GPIOH_CLK_INIT();
+					}
+		else if(Gpiox==GPIOI){
+					GPIOI_CLK_INIT();
+					}
+
+	}
+
+	else{
+
+		if (Gpiox==GPIOA){
+					GPIOA_CLK_DINIT();
+				}
+				else if(Gpiox==GPIOB){
+					GPIOB_CLK_DINIT();
+					}
+				else if(Gpiox==GPIOC){
+							GPIOC_CLK_DINIT();
+							}
+				else if(Gpiox==GPIOD){
+							GPIOD_CLK_DINIT();
+							}
+				else if(Gpiox==GPIOE){
+							GPIOE_CLK_DINIT();
+							}
+				else if(Gpiox==GPIOF){
+							GPIOF_CLK_DINIT();
+							}
+				else if(Gpiox==GPIOG){
+							GPIOG_CLK_DINIT();
+							}
+				else if(Gpiox==GPIOH){
+							GPIOH_CLK_DINIT();
+							}
+				else if(Gpiox==GPIOI){
+							GPIOI_CLK_DINIT();
+							}
+
+	}
+
+
+}
+uint8_t return_code(Gpio_Reg_Def *Pgpiox){
+	if(Pgpiox==GPIOA){
+			return 0;
+		}
+		else if(Pgpiox==GPIOB){
+				return 1;
+			}
+		else if(Pgpiox==GPIOC){
+					return 2;
+				}
+		else if(Pgpiox==GPIOD){
+					return 3;
+				}
+		else if(Pgpiox==GPIOE){
+					return 4;
+				}
+		else if(Pgpiox==GPIOF){
+					return 5;
+				}
+		else if(Pgpiox==GPIOG){
+					return 6;
+				}
+		else if(Pgpiox==GPIOH){
+					return 7;
+				}
+		else if(Pgpiox==GPIOI){
+					return 8;
+					}
+    return 0;
+
+}
+void Gpio_Init(Gpio_Handle_t *Gpiox_Handle){
+
+if (Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Mode <= GPIO_MODE_ANALOG){
+	//moder
+	uint8_t temp1=2*(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+Gpiox_Handle->pGPIOX->Moder &=!(3<<temp1);
+Gpiox_Handle->pGPIOX->Moder |=(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Mode<<2*Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+
+    //OTYPER
+Gpiox_Handle->pGPIOX->Otyper&=!(0x1<<Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+Gpiox_Handle->pGPIOX->Otyper|=(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Optype<<Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+
+    //SPEED
+Gpiox_Handle->pGPIOX->Ospeedr&=!(0x3<<2*Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+Gpiox_Handle->pGPIOX->Ospeedr|=(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Speed<<2*Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+    //pushpull
+Gpiox_Handle->pGPIOX->Pupdr &=!(0x3 << (2*Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number));
+Gpiox_Handle->pGPIOX->Pupdr|=(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_PUPDcontrl<<2*Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+
+}
+
+else{
+
+	if(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Mode==GPIO_MODE_IT_FT){
+		    EXTI->EXTI_FTSR |=(1<<Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+		    EXTI->EXTI_RTSR &=!(1<<Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+		}
+	else if(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Mode==GPIO_MODE_IT_RT){
+			EXTI->EXTI_RTSR |=(1<<Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+			EXTI->EXTI_FTSR &=!(1<<Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+			}
+	else if(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Mode==GPIO_MODE_IT_RFT){
+			EXTI->EXTI_RTSR |=(1<<Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+			EXTI->EXTI_FTSR |=(1<<Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+				}
+	uint8_t code=return_code(Gpiox_Handle->pGPIOX);
+	uint8_t temp1=Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number/4;
+	uint8_t temp2=Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number%4;
+
+	SYSCONFIG_PLCK_EN();
+	SYSCFG->SYSCFG_EXTICR[temp1]&=!(0xf<<(temp2)*4);
+	SYSCFG->SYSCFG_EXTICR[temp1]|=(code<<(temp2)*4);
+
+
+	EXTI->EXTI_IMR |=(1<<Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number);
+
+}
+//alternate function configure karle!!
+if(Gpiox_Handle->pGPIOX->Moder ==GPIO_MODE_ATFN){
+	if(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number>7){
+		Gpiox_Handle->pGPIOX->Afr[1]|=(0x0f<<4*(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number%8));
+		Gpiox_Handle->pGPIOX->Afr[1]|=(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_AltfnMode<<4*(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number%8));
+	}
+	else{
+		Gpiox_Handle->pGPIOX->Afr[0]|=(0x0f<<4*(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number%8));
+		Gpiox_Handle->pGPIOX->Afr[0]|=(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_AltfnMode<<4*(Gpiox_Handle->Gpio_Pin_Config.Gpio_Pin_Number%8));
+
+	}
+
+}
+}
+void Gpio_Dinit(Gpio_Reg_Def *Gpiox, Rcc_Reg_Def* Rcc){
+
+	if (Gpiox==GPIOA){
+				Rcc->RCC_AHBRSTR[0]|=(0x1<<0);
+				Rcc->RCC_AHBRSTR[0]&=!(0x1<<0);
+
+			}
+			else if(Gpiox==GPIOB){
+				Rcc->RCC_AHBRSTR[0]|=(0x1<<1);
+								Rcc->RCC_AHBRSTR[0]&=!(0x1<<1);
+
+				}
+			else if(Gpiox==GPIOC){
+				Rcc->RCC_AHBRSTR[0]|=(0x1<<2);
+								Rcc->RCC_AHBRSTR[0]&=!(0x1<<2);
+
+						}
+			else if(Gpiox==GPIOD){
+				Rcc->RCC_AHBRSTR[0]|=(0x1<<3);
+								Rcc->RCC_AHBRSTR[0]&=!(0x1<<3);
+
+						}
+			else if(Gpiox==GPIOE){
+				Rcc->RCC_AHBRSTR[0]|=(0x1<<4);
+								Rcc->RCC_AHBRSTR[0]&=!(0x1<<4);
+
+						}
+			else if(Gpiox==GPIOF){
+				Rcc->RCC_AHBRSTR[0]|=(0x1<<5);
+								Rcc->RCC_AHBRSTR[0]&=!(0x1<<5);
+
+						}
+			else if(Gpiox==GPIOG){
+				Rcc->RCC_AHBRSTR[0]|=(0x1<<6);
+								Rcc->RCC_AHBRSTR[0]&=!(0x1<<6);
+
+						}
+			else if(Gpiox==GPIOH){
+				Rcc->RCC_AHBRSTR[0]|=(0x1<<7);
+								Rcc->RCC_AHBRSTR[0]&=!(0x1<<7);
+
+						}
+			else if(Gpiox==GPIOI){
+				Rcc->RCC_AHBRSTR[0]|=(0x1<<8);
+								Rcc->RCC_AHBRSTR[0]&=!(0x1<<8);
+
+						}
+
+
+
+}
+uint8_t Gpio_Read_Pin(Gpio_Reg_Def *Gpiox,uint8_t pin_number){
+	return (uint8_t)(0x1&(Gpiox->Idr>>pin_number));
+}
+uint16_t Gpio_Read_Port(Gpio_Reg_Def *Gpiox){
+	return (uint16_t )(Gpiox->Odr);
+}
+void Gpio_Write_Pin(Gpio_Reg_Def *Gpiox,uint8_t pin_number,uint8_t EnorDi){
+	if(EnorDi==Enable){
+		Gpiox->Odr |=(0x1<<pin_number);
+	}
+	else{
+		Gpiox->Odr &=!(0x1<<pin_number);
+	}
+
+}
+void Gpio_Write_Port(Gpio_Reg_Def *Gpiox,uint16_t Value){
+	Gpiox->Odr|=Value;
+}
+void Gpio_Toggle_Pin(Gpio_Reg_Def *Gpiox,uint8_t pin_number){
+	Gpiox->Odr ^=(1<<pin_number);
+}
+void Gpio_Irq_Config(uint8_t Irq_No,uint8_t Priority,uint8_t EnorDi){
+
+	if(EnorDi==Enable){
+		if(Irq_No<31){
+			*NVIC_ISER0 |=(1<<Irq_No);
+		}
+		else if (31<Irq_No&&Irq_No<63){
+			*NVIC_ISER1 |=(1<<Irq_No%32);
+		}
+		else if (63<Irq_No&&Irq_No<95){
+					*NVIC_ISER2 |=(1<<Irq_No%32);
+				}
+
+	}
+
+	else{
+		if(Irq_No<31){
+					*NVIC_ICER0 |=(1<<Irq_No);
+				}
+				else if (31<Irq_No&&Irq_No<63){
+					*NVIC_ICER1 |=(1<<Irq_No%32);
+				}
+				else if (63<Irq_No&&Irq_No<95){
+					*NVIC_ICER2 |=(1<<Irq_No%32);
+						}
+	}
+
+
+	uint8_t temp1=Irq_No/4;
+	uint8_t temp2=Irq_No%4+(8-BITS_ENABLE_FOR_PRIORITY);
+	*(NVIC_IPR_BASE+temp1) &=!(0xff<<8*temp2);
+	*(NVIC_IPR_BASE+temp1) |=(Priority<<8*temp2);
+
+
+}
+
+void Gpio_Irq_Handling(uint8_t pin_number){
+
+	if(EXTI->EXTI_PR &(1<<pin_number)){
+
+		EXTI->EXTI_PR |=(1<<pin_number);
+	}
+
+}
+
